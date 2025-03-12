@@ -1,0 +1,108 @@
+﻿
+.home {
+    position: relative;
+}
+
+.home img {
+    width: 100%;
+    height: 500px; /* ارتفاع مناسب للسلايدر */
+    object-fit: cover; /* ضمان تناسب الصورة */
+    transition: transform 0.5s ease-in-out;
+}
+
+/* تأثير الزووم عند تمرير الماوس */
+.home:hover img {
+    transform: scale(1.05);
+}
+
+/* تأثير التظليل فوق الصورة */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* تظليل خفيف */
+    z-index: 1;
+}
+
+/* تصميم العنوان */
+.restaurant-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+}
+
+
+.image-container {
+    position: relative;
+    display: inline-block;
+    overflow: hidden; /* يضمن أن الطبقة لا تتجاوز الصورة */
+    border-radius: 10px;
+}
+
+/* تنسيق الصورة */
+.image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* طبقة الظل الداكن */
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* لون أسود شفاف */
+    transition: background 0.5s ease-in-out;
+    border-radius: 10px;
+}
+
+/* تأثير عند تمرير الماوس */
+.image-container:hover .image-overlay {
+    background: rgba(0, 0, 0, 0.2); /* يقل التعتيم عند تمرير الماوس */
+}
+
+.image-container:hover img {
+    transform: scale(1.05); /* تكبير طفيف لإضافة تأثير جذاب */
+}
+
+
+
+
+
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+.logo {
+    font-family: 'Pacifico', cursive;
+    font-size: 30px;
+    color: black;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+}
+
+    .logo span {
+        color: black;
+    }
+
+    .logo img {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+    }

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoFoodyProject", "GoFoodyProject\GoFoodyProject.csproj", "{C0779618-217C-4924-9184-17AAEAF6B4B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{1F633590-9E03-4232-AB00-E98CB2CE57C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domains", "Domains\Domains.csproj", "{3BCDE12C-F3D6-4A26-9A6E-7F388FD3A5C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0779618-217C-4924-9184-17AAEAF6B4B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0779618-217C-4924-9184-17AAEAF6B4B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0779618-217C-4924-9184-17AAEAF6B4B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0779618-217C-4924-9184-17AAEAF6B4B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F633590-9E03-4232-AB00-E98CB2CE57C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F633590-9E03-4232-AB00-E98CB2CE57C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F633590-9E03-4232-AB00-E98CB2CE57C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F633590-9E03-4232-AB00-E98CB2CE57C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BCDE12C-F3D6-4A26-9A6E-7F388FD3A5C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BCDE12C-F3D6-4A26-9A6E-7F388FD3A5C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BCDE12C-F3D6-4A26-9A6E-7F388FD3A5C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BCDE12C-F3D6-4A26-9A6E-7F388FD3A5C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

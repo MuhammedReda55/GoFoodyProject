@@ -1,0 +1,120 @@
+﻿@model List<Restaurant>
+
+    <link href="~/Dashpord/css/MystyleHomePage.css" rel="stylesheet" />
+<!-- Home slider -->
+<!-- استدعاء Animate.css -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick-theme.css" />
+
+
+
+<section class="p-0 layout-7">
+    <div class="slide-1 home-slider">
+        @foreach (var item in Model)
+        {
+            <div>
+                <div class="home text-left image-container">
+                    <img src="~/UploadsImage/RestaurantImage/@(item.RestaurantImage ?? "default.jpg")"
+                         alt=""
+                         class="bg-img blur-up lazyload shadow-img">
+                    <!-- Overlay Dark Layer -->
+                    <div class="image-overlay"></div>
+
+                    <div class="container-fluid custom-container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="slider-contain">
+                                    <div>
+                                        <h4 class="animate__animated animate__fadeInDown" style="color:white">
+                                            Welcome to Our Restaurant
+                                        </h4>
+                                        <h1 class="animate__animated animate__fadeInUp animate__delay-1s" style="color:white">
+                                            @item.RestaurantName
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+
+<!-- Home slider end -->
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="title3">
+                   
+                    <h2 class="title-inner3">All Resturant</h2>
+                    <div class="line"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="pt-3 category-tools" >
+    <div class="container" >
+        <div class="row g-3">
+            @foreach (var restaurant in Model)
+            {
+                <div class="col-lg-3 col-md-6 col-sm-12" style="margin-bottom:30px;">
+                    <div class="custom-card">
+                        <a asp-action="MenusPage"
+                           asp-controller="Home"
+                           asp-route-restaurantId="@restaurant.RestaurantId">
+                            <div class="card-img">
+                                <img src="~/UploadsImage/RestaurantImage/@(restaurant.RestaurantImage ?? "default.jpg")"
+                                     class="img-fluid"
+                                     alt="@restaurant.RestaurantName">
+                            </div>
+                            <div class="card-content">
+                                <h5 class="restaurant-name">@restaurant.RestaurantName</h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        console.log("Slick Initialized"); // للتأكد إن السكريبت شغال
+
+        $('.slide-1').slick({
+            dots: true,             // عرض النقاط للتنقل بين الصور
+            infinite: true,         // التكرار اللانهائي
+            speed: 200,             // سرعة الانتقال
+            slidesToShow: 1,        // عدد الصور اللي تظهر في نفس الوقت
+            slidesToScroll: 1,      // عدد الصور اللي يتم تمريرها
+            autoplay: true,         // تشغيل تلقائي
+            autoplaySpeed: 3000,    // المدة بين كل صورة والثانية (3 ثواني)
+            fade: true,             // تأثير الفيد
+            cssEase: 'linear'       // تأثير السلاسة
+        });
+    });
+
+       
+
+</script>
+
+
+
+
+

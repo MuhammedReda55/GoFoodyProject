@@ -1,0 +1,91 @@
+﻿.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px; /* تكبير حجم البحث */
+    margin: 20px auto;
+}
+
+.search-box {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #f4450d;
+    border-radius: 25px;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+}
+
+    .search-box:focus {
+        border-color: #0056b3;
+        box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.5);
+    }
+
+.search-results {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
+    width: 100%;
+    position: absolute;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none;
+    max-height: 300px; /* تحديد أقصى ارتفاع */
+    overflow-y: auto; /* السماح بالتمرير إذا زادت النتائج */
+}
+
+/* ✅ تنسيق كل عنصر داخل البحث */
+.search-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    /* ✅ تكبير الصورة وتحسين تنسيقها */
+    .search-item img {
+        width: 70px; /* تكبير الصورة */
+        height: 70px;
+        border-radius: 10px; /* زوايا ناعمة */
+        margin-right: 15px; /* مسافة بين الصورة والنص */
+        object-fit: cover; /* منع تمدد الصورة */
+    }
+
+    /* ✅ تنسيق النص بجانب الصورة */
+    .search-item span {
+        font-size: 13px; /* تكبير حجم النص */
+        color: #333;
+        font-weight: bold;
+        flex-grow: 1; /* السماح للنص بأخذ المساحة المتبقية */
+    }
+
+    /* ✅ إزالة الخط السفلي من الروابط */
+    .search-item a {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    /* ✅ تحسين التأثير عند التمرير */
+    .search-item:hover {
+        background: #f4450d; /* تغيير لون الخلفية */
+        color: white; /* تغيير لون النص */
+    }
+
+        /* ✅ التأكد أن الرابط يتأثر بالتغيير */
+        .search-item:hover a {
+            color: white;
+        }
+
+/* ✅ تنسيق حالة "لا توجد نتائج" */
+.no-results {
+    padding: 12px;
+    text-align: center;
+    color: #777;
+    font-size: 16px;
+}

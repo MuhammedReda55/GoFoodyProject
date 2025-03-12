@@ -1,0 +1,85 @@
+﻿@model RegisterViewModel
+
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Create Account</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-controller="User" asp-action="HomePage">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Create Account</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="register-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Create Account</h3>
+                <div class="theme-card">
+                    <form class="theme-form" method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Register" role="form">
+
+                        <!-- ✅ Alert Box for validation summary -->
+                        <div asp-validation-summary="All" class="alert alert-danger" role="alert" style="display: none;"></div>
+
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <span asp-validation-for="FullName" class="text-danger small d-block mb-1"></span>
+                                <label for="fname">Full Name</label>
+                                <input type="text" class="form-control" id="fname" placeholder="Full Name" asp-for="FullName">
+                            </div>
+                            <div class="col-md-6">
+                                <span asp-validation-for="PhoneNumber" class="text-danger small d-block mb-1"></span>
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" asp-for="PhoneNumber">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <span asp-validation-for="Email" class="text-danger small d-block mb-1"></span>
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Email" asp-for="Email">
+                            </div>
+                            <div class="col-md-6">
+                                <span asp-validation-for="Password" class="text-danger small d-block mb-1"></span>
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Enter your password" asp-for="Password">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small d-block mb-1"></span>
+                                <label for="confirm-password">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirm-password" placeholder="Confirm Password" asp-for="ConfirmPassword">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-solid mt-3">Create Account</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // ✅ تحسين طريقة عرض رسائل الخطأ عند إرسال الفورم
+    document.addEventListener("DOMContentLoaded", function () {
+        let validationSummary = document.querySelector("[asp-validation-summary='All']");
+        if (validationSummary && validationSummary.children.length > 0) {
+            validationSummary.style.display = "block";
+        }
+    });
+</script>

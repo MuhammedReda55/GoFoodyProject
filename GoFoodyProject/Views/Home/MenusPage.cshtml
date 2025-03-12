@@ -1,0 +1,104 @@
+﻿@model MenuItemViewModel
+
+<!-- Home slider -->
+<section class="p-0 layout-7">
+    <div class="slide-1 home-slider">
+        <div>
+            <div class="home text-left image-container">
+                <img src="~/UploadsImage/RestaurantImage/@(Model.Resturant.RestaurantImage ?? "default.jpg")"
+                alt=""
+                class="bg-img blur-up lazyload shadow-img">
+                <!-- Overlay Dark Layer -->
+                <div class="image-overlay"></div>
+
+                <div class="container-fluid custom-container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="slider-contain">
+                                <div>
+                                    <h4 style="color:white">Welcome to Our Restaurant</h4>
+                                    <h1 id="restaurant-name" style="color:white"></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Home slider end -->
+
+
+
+
+<!-- Paragraph-->
+<div class="title1 section-t-space">
+    
+    <h2 class="title-inner1">Our Menu</h2>
+</div>
+<!-- Paragraph end -->
+
+
+<section class="pt-0 section-b-space ratio_asos">
+    <div class="container">
+        <div class="row game-product grid-products">
+            @foreach(var item in Model.Items)
+            {
+                <div class="product-box col-xl-2 col-lg-3 col-sm-4 col-6">
+                    <div class="img-wrapper">
+                        <div class="front">
+                            <a href="product-page(no-sidebar).html" class="bg-size blur-up lazyloaded" style="background-image: url(&quot;~/UploadsImage/RestaurantImage/@(item.ProductImage ?? "default.jpg");); background-size: cover; background-position: center center; display: block;">
+                                <img src="~/UploadsImage/RestaurantImage/@(item.ProductImage ?? "default.jpg")" class="img-fluid blur-up lazyload bg-img" alt="" style="display: none;"></a>
+                        </div>
+                        <div class="cart-info cart-wrap">
+                            <a href="javascript:void(0)" title="Add to Wishlist" tabindex="0"><i class="ti-heart" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="modal" data-target="#quick-view" title="Quick View" tabindex="0"><i class="ti-search" aria-hidden="true"></i></a>
+                            <a href="compare.html" title="Compare" tabindex="0"><i class="ti-reload" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="add-button" data-toggle="modal" data-target="#addtocart">
+                            add to
+                            cart
+                        </div>
+                    </div>
+                    <div class="product-detail">
+                        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i></div>
+                        <a href="product-page(no-sidebar).html">
+                            <h6>@item.FoodName</h6>
+                        </a>
+                        <h4>$@item.Price</h4>
+                    </div>
+                </div>
+            }
+            
+         
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var options = {
+            strings: [
+                "@Model.Resturant.RestaurantName",
+                "The best restaurant in town",
+                "Try our delicious dishes",
+                "Enjoy your favorite meal now!"
+            ],
+            typeSpeed: 50,   // سرعة الكتابة
+            backSpeed: 50,   // سرعة المسح
+            backDelay: 1500, // مدة التوقف قبل المسح
+            loop: true       // تشغيل في Loop
+        };
+
+        var typed = new Typed("#restaurant-name", options);
+    });
+</script>
+
+
+
+
+
+

@@ -1,4 +1,5 @@
 ﻿
+@inject SignInManager<ApplicationUser> sinInManager
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +12,8 @@
     <meta name="author" content="multikart">
     <link rel="icon" href="~/Dashpord/images/favicon/4.png" type="image/x-icon">
     <link rel="shortcut icon" href="~/Dashpord/images/favicon/4.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Multikart - Multi-purpopse E-commerce Html Template</title>
 
     <!--Google font-->
@@ -59,7 +62,7 @@
                         <div class="col-lg-6 text-right">
                             <ul class="header-dropdown">
                                 <li class="mobile-wishlist">
-                                    <a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                    <a href=""><i class="fa fa-heart" aria-hidden="true"></i></a>
                                 </li>
                                 <li class="onhover-dropdown mobile-account">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -301,9 +304,24 @@
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 My Account
                                 <ul class="onhover-show-div">
-                                    <li><a href="#" data-lng="en">Login</a></li>
-                                    <li><a href="#" data-lng="es">Logout</a></li>
+                                    @if (sinInManager.IsSignedIn(User))
+                                    {
+                                        <li><a asp-controller="Feature" asp-action="Profile" data-lng="es">My Profile</a></li>
+                                        <li><a asp-controller="Feature" asp-action="MyOrders" data-lng="es">My Orders</a></li>
+                                        <li><a asp-controller="User" asp-action="Logout" data-lng="es">Logout</a></li>
+
+                                        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin") || User.IsInRole("Employee"))
+                                        {
+                                            <li><a asp-area="DashpordPage" asp-controller="Dashpord" asp-action="AdminTemplate">Dashboard</a></li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li><a asp-controller="User" asp-action="Login" data-lng="en">Login</a></li>
+                                        <li><a asp-controller="User" asp-action="Register" data-lng="en">Sign Up</a></li>
+                                    }
                                 </ul>
+
                             </li>
                         </ul>
                     </div>
@@ -797,6 +815,11 @@
     
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Styles", required: false)
+    @await RenderSectionAsync("selects", required: false)
 </body>
 
 </html>

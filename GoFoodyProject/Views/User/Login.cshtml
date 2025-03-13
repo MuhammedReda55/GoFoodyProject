@@ -26,23 +26,23 @@
             <div class="col-lg-6">
                 <h3>Login</h3>
                 <div class="theme-card">
-                    <form class="theme-form" method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Login" role="form">
+                    <form class="theme-form" method="post" asp-controller="User" asp-action="Login">
 
-                        <!-- ✅ Alert Box for validation summary -->
-                        <div asp-validation-summary="All" class="alert alert-danger" role="alert" style="display: none;"></div>
+                        <!-- ✅ عرض جميع الأخطاء في الأعلى -->
+                        <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
 
                         <input asp-for="ReturnUrl" type="hidden" />
 
                         <div class="form-group">
-                            <span asp-validation-for="Email" class="text-danger small d-block mb-1"></span> <!-- ✅ تم نقل رسالة الخطأ فوق الحقل -->
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" placeholder="Email" asp-for="Email">
+                            <span asp-validation-for="Email" class="text-danger small"></span>
                         </div>
 
                         <div class="form-group">
-                            <span asp-validation-for="Password" class="text-danger small d-block mb-1"></span> <!-- ✅ تم نقل رسالة الخطأ فوق الحقل -->
-                            <label for="review">Password</label>
-                            <input type="password" class="form-control" id="review" placeholder="Enter your password" asp-for="Password">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter your password" asp-for="Password">
+                            <span asp-validation-for="Password" class="text-danger small"></span>
                         </div>
 
                         <button type="submit" class="btn btn-solid">Login</button>
@@ -67,11 +67,21 @@
 </section>
 
 <script>
-    // ✅ تحسين طريقة عرض رسائل الخطأ عند إرسال الفورم
     document.addEventListener("DOMContentLoaded", function () {
         let validationSummary = document.querySelector("[asp-validation-summary='All']");
-        if (validationSummary && validationSummary.children.length > 0) {
+        if (validationSummary && validationSummary.innerHTML.trim().length > 0) {
             validationSummary.style.display = "block";
         }
     });
 </script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @if (TempData["message"] != null)
+    {
+        <script>
+            toastr.success('@TempData["message"]')
+        </script>
+    }
+}

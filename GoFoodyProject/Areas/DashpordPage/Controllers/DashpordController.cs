@@ -1,5 +1,7 @@
 ﻿using BL;
 using Domains;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +13,15 @@ namespace GoFoodyProject.Areas.DashpordPage.Controllers
     {
         ConfigContext _context;
         IResturant _resturant;
-        public DashpordController(ConfigContext context, IResturant resturant) 
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public DashpordController(ConfigContext context, IResturant resturant, UserManager<ApplicationUser> userManager) 
         {
             _context = context;
             _resturant = resturant;
+            this._userManager = userManager;
         }
+        //[Authorize(Roles = "SuperAdmin")]
         public IActionResult AdminTemplate()
         {
             return View();
@@ -336,7 +342,121 @@ namespace GoFoodyProject.Areas.DashpordPage.Controllers
         }
 
 
+        public async Task<IActionResult> Users()
+        {
+            var users = _userManager.Users.ToList();
 
+
+            var userRoles = new List<UserWithRolesVM>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                userRoles.Add(new UserWithRolesVM
+                {
+                    Id = user.Id,
+                    UserName = user.FullName,
+                    Email = user.Email,
+                    PhoneNumber=user.PhoneNumber,
+                    
+                    Roles = roles.ToList(),
+                    IsBlocked = user.LockoutEnd != null && user.LockoutEnd > DateTime.UtcNow
+                });
+            }
+
+            return View(userRoles);
+        }
+        [HttpPost]
+        public async Task<IActionResult> BlockUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                if (user.LockoutEnd != null && user.LockoutEnd > DateTime.UtcNow)
+                {
+
+                    user.LockoutEnd = null;
+                }
+                else
+                {
+                    user.LockoutEnd = DateTime.UtcNow.AddYears(100);
+                }
+
+                await _userManager.UpdateAsync(user);
+
+                TempData["message"] = $"User {user.UserName} status updated.";
+
+            }
+
+
+            return RedirectToAction("Users");
+        }
+
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+
+            var user = await _userManager.FindByIdAsync(id);
+
+
+            if (user != null)
+            {
+
+                var result = await _userManager.DeleteAsync(user);
+
+
+                if (result.Succeeded)
+                {
+                    TempData["message"] = $"User {user.UserName} is Deleted Sueccessfully";
+                    return RedirectToAction("Users");
+                }
+                else
+                {
+                    return BadRequest("Error deleting user.");
+                }
+            }
+
+
+            return NotFound("User not found.");
+        }
+        [HttpPost]
+
+        public async Task<IActionResult> ChangeRole(string id, string role)
+        {
+            //// التحقق من صحة الـ Role الجديد
+            //var validRoles = new List<string> { SD.AdminRole, SD.UserRole, SD.EmployeeRole };
+            //if (!validRoles.Contains(newRole))
+            //{
+            //    return BadRequest("Invalid role.");
+            //}
+
+            
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            // تمسح الأدوار القديمة وإضافة الدور الجديد
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+
+            if (!removeResult.Succeeded)
+            {
+                return BadRequest("Error while removing old roles.");
+            }
+
+            var addResult = await _userManager.AddToRoleAsync(user, role);
+
+            if (addResult.Succeeded)
+            {
+                TempData["message"] = $"User {user.UserName} role updated to {role} successfully.";
+                return RedirectToAction("Users");
+            }
+            else
+            {
+                return BadRequest("Error while updating role.");
+            }
+        }
 
     }
 }

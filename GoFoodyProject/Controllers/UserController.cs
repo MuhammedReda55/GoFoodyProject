@@ -1,4 +1,5 @@
 ﻿using Domains;
+using GoFoodyProject.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,12 +11,17 @@ namespace GoFoodyProject.Controllers
 
      UserManager<ApplicationUser> _userManager;
      SignInManager<ApplicationUser> _signInManager;
+        private readonly IEmailSender _emailSender;
+        private readonly EmailService _emailService;
 
-    public UserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public UserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, 
+            IEmailSender emailSender, EmailService emailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
-    }
+        _emailSender = emailSender;
+        _emailService = emailService;
+        }
 
         // ✅ عرض صفحة تسجيل الدخول
         [HttpGet]
@@ -27,22 +33,42 @@ namespace GoFoodyProject.Controllers
         // ✅ تنفيذ تسجيل الدخول
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel loginVM)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
+                var user = await _userManager.FindByEmailAsync(loginVM.Email);
+
+
+                if (user != null)
+                {
+                    if (user.LockoutEnd != null && user.LockoutEnd > DateTime.UtcNow)
+                    {
+                        ModelState.AddModelError(string.Empty, "Your account is locked.");
+                        return View(loginVM);
+                    }
+                    var result = await _userManager.CheckPasswordAsync(user, loginVM.Password);
+
+                    if (result)
+                    {
+                        await _signInManager.SignInAsync(user, loginVM.RememberMe);
+                        return RedirectToAction("HomePage", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "هناك خطأ في الحساب او في كلمه السر");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "البريد الالكتروني غير موجود");
+                }
             }
 
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-            if (result.Succeeded)
-            {
-                return RedirectToLocal(model.ReturnUrl);
-            }
+            return View(loginVM);
 
-            ModelState.AddModelError(string.Empty, "Invalid email or password.");
 
-            return View(model);
+            
         }
 
         // ✅ عرض صفحة التسجيل
@@ -84,9 +110,16 @@ namespace GoFoodyProject.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
+                await _userManager.AddToRoleAsync(user, SD.UserRole);
+                string loginUrl = Url.Action("Login", "Dashpord", null, protocol: Request.Scheme);
+
+                // ✅ استدعاء EmailService لإرسال البريد
+                await _emailService.SendRegistrationEmailAsync(user.Email, user.FullName, loginUrl);
+
 
                 // ✅ إعادة التوجيه إلى ReturnUrl إذا كان موجودًا، وإلا الذهاب للصفحة الرئيسية
-                return LocalRedirect(model.ReturnUrl ?? "/");
+                //return LocalRedirect(model.ReturnUrl ?? "/");
+                return RedirectToAction("HomePage", "Home");
             }
 
             // ✅ إذا حدث خطأ أثناء إنشاء المستخدم، نضيف الأخطاء للـ ModelState لعرضها في الواجهة
@@ -100,12 +133,12 @@ namespace GoFoodyProject.Controllers
 
 
         // ✅ تنفيذ تسجيل الخروج
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login","User");
         }
 
         // ✅ دالة إعادة التوجيه للصفحة الأصلية بعد تسجيل الدخول أو التسجيل

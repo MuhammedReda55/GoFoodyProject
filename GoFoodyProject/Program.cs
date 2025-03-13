@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Domains;
+using GoFoodyProject.DbInitionizer;
+using GoFoodyProject.Utility;
 
 namespace GoFoodyProject
 {
@@ -25,7 +27,9 @@ namespace GoFoodyProject
             }).AddEntityFrameworkStores<ConfigContext>();
 
             builder.Services.AddScoped<IResturant, CLsResturants>();
-
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
+            builder.Services.AddScoped<EmailService>();
+            builder.Services.AddScoped<IDbInitioniser, DbInitioniser>();
 
             #region Sesstion and cookies
             builder.Services.AddSession();
@@ -62,6 +66,10 @@ namespace GoFoodyProject
 
             app.UseAuthentication();
             app.UseAuthorization();
+            var scope = app.Services.CreateScope();
+            var service = scope.ServiceProvider.GetService<IDbInitioniser>();
+            service.Initionlize();
+
             app.UseSession();
 
             app.MapStaticAssets();

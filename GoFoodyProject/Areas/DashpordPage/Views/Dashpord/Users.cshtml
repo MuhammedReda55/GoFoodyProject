@@ -1,0 +1,140 @@
+﻿@model List<Domains.UserWithRolesVM>
+
+<h2 style="color: #e83232; font-weight: bold; display: flex; align-items: center;">
+    <i class="bi bi-people-fill" style="margin-right: 10px; color: #e83232;"></i> Users
+</h2>
+@section Scripts {
+    @if (TempData["message"] != null)
+    {
+        <script>
+            toastr.success('@TempData["message"]')
+        </script>
+    }
+}
+<style>
+    table {
+        font-size: 14px; /* تصغير حجم النص */
+        width: 90%; /* تصغير عرض الجدول */
+        margin: auto; /* توسيطه في الصفحة */
+    }
+
+    th, td {
+        padding: 8px; /* تقليل المسافات داخل الخلايا */
+        text-align: center; /* محاذاة المحتوى للوسط */
+        white-space: nowrap; /* منع النص من النزول لسطر جديد */
+    }
+
+    .form-select-sm {
+        font-size: 12px; /* تصغير حجم الخط للقائمة المنسدلة */
+    }
+
+    .btn-sm {
+        font-size: 12px; /* تصغير أزرار الإجراءات */
+        padding: 4px 8px;
+    }
+</style>
+
+
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr style="background-color:#003366; color: white; text-align: center;">
+            <th style="white-space: nowrap;">#</th>
+            <th style="white-space: nowrap;">Username</th>
+            <th style="white-space: nowrap;">Email</th>
+            <th style="white-space: nowrap;">Phone Number</th>
+            <th style="white-space: nowrap;">Roles</th>
+            <th style="white-space: nowrap;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr>
+                <td>@(i + 1)</td>
+                <td>@Model[i].Email</td>
+                <td>@Model[i].UserName</td>
+                
+                <td>@Model[i].PhoneNumber</td>
+                <td>
+                    @foreach (var role in Model[i].Roles)
+                    {
+                        var roleColor = role switch
+                        {
+                            "SuperAdmin" => "bg-dark",
+                            "Admin" => "bg-danger",
+                            "User" => "bg-warning",
+                            "Employee" => "bg-primary",
+                            _ => "bg-secondary"
+                        };
+
+                        <span class="badge @roleColor">@role</span>
+                    }
+                </td>
+                <td style="text-align: center;">
+                    <!-- Block/Unblock Button -->
+                    <form asp-action="BlockUser" asp-controller="Dashpord" style="display: inline;">
+                        <input type="hidden" name="id" value="@Model[i].Id" />
+                        <button type="submit" class="btn btn-sm @(Model[i].IsBlocked ? "btn-warning" : "btn-success")">
+                            <i class="bi @(Model[i].IsBlocked ? "bi-lock" : "bi-unlock")"></i>
+                            @(Model[i].IsBlocked ? "Blocked" : "Block")
+                        </button>
+                    </form>
+
+                    <!-- Role Change Dropdown -->
+                    <form asp-action="ChangeRole" asp-controller="Dashpord" method="post" style="display: inline;">
+                        <input type="hidden" name="id" value="@Model[i].Id" />
+                        <select name="role" class="form-select form-select-sm" style="width: 130px; display: inline; margin-left: 5px; color: black; border: 1px solid black;" onchange="this.form.submit()">
+                            <option selected disabled>Change Role</option>
+                            <option value="SuperAdmin">SuperAdmin</option>
+                            <option value="Admin">Admin</option>
+                            <option value="User">User</option>
+                            <option value="Employee">Employee</option>
+                        </select>
+                    </form>
+
+                    <!-- Delete Button -->
+                    <button class="btn btn-danger btn-sm delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@Model[i].Id">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this user?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="#" id="confirmDelete" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let deleteId = null;
+
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                deleteId = this.getAttribute('data-id');
+            });
+        });
+
+        document.getElementById('confirmDelete').addEventListener('click', function () {
+            if (deleteId) {
+                window.location.href = `/DashpordPage/Dashpord/DeleteUser?id=${deleteId}`;
+            }
+        });
+    });
+</script>

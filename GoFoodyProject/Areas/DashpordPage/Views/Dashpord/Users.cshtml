@@ -72,13 +72,16 @@
                 </td>
                 <td style="text-align: center;">
                     <!-- Block/Unblock Button -->
-                    <form asp-action="BlockUser" asp-controller="Dashpord" style="display: inline;">
-                        <input type="hidden" name="id" value="@Model[i].Id" />
-                        <button type="submit" class="btn btn-sm @(Model[i].IsBlocked ? "btn-warning" : "btn-success")">
-                            <i class="bi @(Model[i].IsBlocked ? "bi-lock" : "bi-unlock")"></i>
-                            @(Model[i].IsBlocked ? "Blocked" : "Block")
-                        </button>
-                    </form>
+                    
+                    @if (!Model[i].Roles.Contains("SuperAdmin")) // 🔹 إخفاء الأزرار إذا كان المستخدم SuperAdmin
+                    {
+                        <form asp-action="BlockUser" asp-controller="Dashpord" style="display: inline;">
+                            <input type="hidden" name="id" value="@Model[i].Id" />
+                            <button type="submit" class="btn btn-sm @(Model[i].IsBlocked ? "btn-warning" : "btn-success")">
+                                <i class="bi @(Model[i].IsBlocked ? "bi-lock" : "bi-unlock")"></i>
+                                @(Model[i].IsBlocked ? "Blocked" : "Block")
+                            </button>
+                        </form>
 
                     <!-- Role Change Dropdown -->
                     <form asp-action="ChangeRole" asp-controller="Dashpord" method="post" style="display: inline;">
@@ -96,6 +99,7 @@
                     <button class="btn btn-danger btn-sm delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@Model[i].Id">
                         <i class="bi bi-trash"></i> Delete
                     </button>
+                    }
                 </td>
             </tr>
         }

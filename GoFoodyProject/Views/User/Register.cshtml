@@ -1,85 +1,87 @@
 ﻿@model RegisterViewModel
 
-<div class="breadcrumb-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="page-title">
-                    <h2>Create Account</h2>
+<link href="~/Dashpord/css/all.min.css" rel="stylesheet" />
+<div class="container d-flex justify-content-center align-items-center min-vh-110" style="margin-top:30px;">
+    <div class="row justify-content-center w-100">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0 rounded p-4" style="background: #fff;">
+                <div class="card-body text-center">
+                    <h3 class="text-uppercase fw-bold" style="color: #ff6600;">Create Account</h3>
+                    <p class="text-muted">Join us and enjoy exclusive features!</p>
+
+                    <!-- ✅ عرض جميع الأخطاء في الأعلى -->
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <form method="post" asp-controller="User" asp-action="Register">
+                        <div class="mb-3 text-start">
+                            <label for="fname" class="form-label fw-bold text-start d-block"></label>
+
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" id="fname" placeholder="Full Name" asp-for="FullName">
+                            </div>
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3 text-start">
+                            <label for="phone" class="form-label fw-bold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
+                                <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" asp-for="PhoneNumber">
+                            </div>
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3 text-start">
+                            <label for="email" class="form-label fw-bold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control" id="email" placeholder="Enter your email" asp-for="Email">
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3 text-start">
+                            <label for="password" class="form-label fw-bold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control" id="password" placeholder="Enter your password" asp-for="Password">
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3 text-start">
+                            <label for="confirm-password" class="form-label fw-bold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fas fa-check-circle"></i></span>
+                                <input type="password" class="form-control" id="confirm-password" placeholder="Confirm Password" asp-for="ConfirmPassword">
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                        </div>
+
+                        <button type="submit" class="btn w-100" style="background: #ff6600; color: white; font-weight: bold; border-radius: 25px; transition: 0.3s;">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <p class="mb-0">Already have an account? <a asp-controller="User" asp-action="Login" class="fw-bold" style="color: #ff6600;">Login here</a></p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <nav aria-label="breadcrumb" class="theme-breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a asp-controller="User" asp-action="HomePage">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Create Account</li>
-                    </ol>
-                </nav>
             </div>
         </div>
     </div>
 </div>
 
-<section class="register-page section-b-space">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h3>Create Account</h3>
-                <div class="theme-card">
-                    <form class="theme-form" method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Register" role="form">
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
-                        <!-- ✅ Alert Box for validation summary -->
-                        <div asp-validation-summary="All" class="alert alert-danger" role="alert" style="display: none;"></div>
-
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <span asp-validation-for="FullName" class="text-danger small d-block mb-1"></span>
-                                <label for="fname">Full Name</label>
-                                <input type="text" class="form-control" id="fname" placeholder="Full Name" asp-for="FullName">
-                            </div>
-                            <div class="col-md-6">
-                                <span asp-validation-for="PhoneNumber" class="text-danger small d-block mb-1"></span>
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" asp-for="PhoneNumber">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <span asp-validation-for="Email" class="text-danger small d-block mb-1"></span>
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="Email" asp-for="Email">
-                            </div>
-                            <div class="col-md-6">
-                                <span asp-validation-for="Password" class="text-danger small d-block mb-1"></span>
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" placeholder="Enter your password" asp-for="Password">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <span asp-validation-for="ConfirmPassword" class="text-danger small d-block mb-1"></span>
-                                <label for="confirm-password">Confirm Password</label>
-                                <input type="password" class="form-control" id="confirm-password" placeholder="Confirm Password" asp-for="ConfirmPassword">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-solid mt-3">Create Account</button>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<script>
-    // ✅ تحسين طريقة عرض رسائل الخطأ عند إرسال الفورم
-    document.addEventListener("DOMContentLoaded", function () {
-        let validationSummary = document.querySelector("[asp-validation-summary='All']");
-        if (validationSummary && validationSummary.children.length > 0) {
-            validationSummary.style.display = "block";
-        }
-    });
-</script>
+    @if (TempData["message"] != null)
+    {
+        <script>
+            toastr.success('@TempData["message"]');
+        </script>
+    }
+}
